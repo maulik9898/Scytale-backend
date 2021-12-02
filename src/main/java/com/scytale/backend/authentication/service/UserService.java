@@ -11,6 +11,8 @@ public interface UserService {
 
     Role saveRole(Role role);
 
+    Boolean userExist(String username);
+
     User addRoleToUser(String username , ERole name);
 
     User getUser(String username);
