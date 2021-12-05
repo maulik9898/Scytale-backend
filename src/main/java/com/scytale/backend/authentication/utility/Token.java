@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scytale.backend.authentication.model.ERole;
 import com.scytale.backend.authentication.model.Role;
 
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
@@ -47,7 +46,7 @@ public class Token {
     }
 
     public static String getAccessToken(User user, HttpServletRequest request) {
-        log.info(Constants.JWT_SECRET);
+
 
         return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())).withClaim(TOKEN_TYPE, TOKEN_ACCESS).sign(getAlgorithm());
     }

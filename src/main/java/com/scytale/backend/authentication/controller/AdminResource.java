@@ -1,4 +1,4 @@
-package com.scytale.backend.authentication.api;
+package com.scytale.backend.authentication.controller;
 
 import com.scytale.backend.authentication.model.User;
 import com.scytale.backend.authentication.service.UserService;
