@@ -36,7 +36,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Role saveRole(Role role) {
+        if (roleRepo.existsByName(role.getName())) {
+            return roleRepo.findByName(role.getName());
+        }
         return roleRepo.save(role);
+
     }
 
     @Override
@@ -60,6 +64,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> getUsers() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public boolean existRole(ERole role) {
+        return roleRepo.existsByName(role);
+    }
+
+    @Override
+    public void deleteUser(String userName) {
+        userRepo.deleteUserByUsername(userName);
     }
 
     @Override

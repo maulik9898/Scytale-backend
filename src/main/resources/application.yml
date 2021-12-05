@@ -1,18 +1,13 @@
 server:
   port: 8080
 spring:
-  application:
-    name: Scytale
-  datasource:
-    password: password
-    url: jdbc:mariadb://localhost:3306/scytale
-    username: maulik
+  profiles:
+    active: prod
   jpa:
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
     show-sql: false
   jmx:
     enabled: false
+

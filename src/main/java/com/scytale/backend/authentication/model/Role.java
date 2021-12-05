@@ -1,5 +1,6 @@
 package com.scytale.backend.authentication.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,6 +22,7 @@ public class Role {
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
+    @Column(unique = true)
     @Enumerated(EnumType.STRING)
     private ERole name;
 }

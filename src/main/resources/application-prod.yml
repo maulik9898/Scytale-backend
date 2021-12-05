@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    password: "${MARIADB_PASSWORD}"
+    url: "jdbc:mariadb://${DB_HOST}:${DB_PORT}/${MARIADB_DATABASE}"
+    username: "${MARIADB_USER}"
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+
+env:
+  JWT_SECRET: "${JWT_SECRET}"
+  ADMIN_USERNAME: "${ADMIN_USERNAME}"
+  ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+  ADMIN_NAME: "${ADMIN_NAME}"
