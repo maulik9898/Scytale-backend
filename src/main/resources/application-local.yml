@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    password: password
+    url: "jdbc:mariadb://localhost:3306/scytale"
+    username: maulik
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+env:
+  JWT_SECRET: 63CF48BBB53C8866579D8417F63BDA08FD289166AEB041C7FD94884BC6BCF21C
+  ADMIN_USER: admin
+  ADMIN_PASSWORD: 12345678
+  ADMIN_NAME: "Maulik Patel"

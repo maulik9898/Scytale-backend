@@ -10,7 +10,7 @@ import com.scytale.backend.authentication.model.Role;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.Date;
@@ -28,9 +28,10 @@ import static com.scytale.backend.authentication.utility.Constants.TOKEN_REFRESH
 import static com.scytale.backend.authentication.utility.Constants.TOKEN_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Controller
 @Slf4j
-@Component
 public class Token {
+
 
     public static Algorithm getAlgorithm() {
         return Algorithm.HMAC256(Constants.JWT_SECRET.getBytes());
@@ -48,21 +49,16 @@ public class Token {
     public static String getAccessToken(User user, HttpServletRequest request) {
 
 
-        return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())).withClaim(TOKEN_TYPE, TOKEN_ACCESS).sign(getAlgorithm());
+        return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + Constants.ACCESS_TOKEN_VALIDITY * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())).withClaim(TOKEN_TYPE, TOKEN_ACCESS).sign(getAlgorithm());
     }
 
     public static String getAccessToken(com.scytale.backend.authentication.model.User user, HttpServletRequest request) {
-        return JWT.create().withSubject(user.getUsername())
-
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getRoles().stream().map(Role::getName).map(ERole::name).collect(Collectors.toList())).withClaim(TOKEN_TYPE, TOKEN_ACCESS).sign(getAlgorithm());
+        return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + Constants.ACCESS_TOKEN_VALIDITY * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim("roles", user.getRoles().stream().map(Role::getName).map(ERole::name).collect(Collectors.toList())).withClaim(TOKEN_TYPE, TOKEN_ACCESS).sign(getAlgorithm());
     }
 
     public static String getRefreshToken(User user, HttpServletRequest request) {
 
-        return JWT.create().withSubject(user.getUsername())
-
-
-                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim(TOKEN_TYPE, TOKEN_REFRESH).sign(getAlgorithm());
+        return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + Constants.REFRESH_TOKEN_VALIDITY * 60 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim(TOKEN_TYPE, TOKEN_REFRESH).sign(getAlgorithm());
     }
 
     public static DecodedJWT decodedJWT(String token) {

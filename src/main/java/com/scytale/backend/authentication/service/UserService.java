@@ -13,11 +13,15 @@ public interface UserService {
 
     Boolean userExist(String username);
 
-    User addRoleToUser(String username , ERole name);
+    User addRoleToUser(String username, ERole name);
 
     User getUser(String username);
 
     List<User> getUsers();
+
+    boolean existRole(ERole role);
+
+    void deleteUser(String userName);
 
 
 }
