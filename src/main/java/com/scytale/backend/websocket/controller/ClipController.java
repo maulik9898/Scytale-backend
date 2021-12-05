@@ -1,26 +1,27 @@
 package com.scytale.backend.websocket.controller;
 
 import com.scytale.backend.websocket.model.Clip;
+import com.scytale.backend.websocket.utils.PubSubMapping;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
-import lombok.AllArgsConstructor;
+import java.security.Principal;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class ClipController {
 
 
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/send/clip")
-    public void sendClipToUser(Clip message) {
-        String user = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        simpMessagingTemplate.convertAndSendToUser(user, "/queue/get/clip", message.getContent());
+    @MessageMapping(PubSubMapping.CLIP_PUB)
+    public void sendClipToUser(Clip message, Principal principal) {
+        simpMessagingTemplate.convertAndSendToUser(principal.getName(), PubSubMapping.CLIP_SUB, message.getContent());
     }
 }

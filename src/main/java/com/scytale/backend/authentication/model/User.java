@@ -3,6 +3,7 @@ package com.scytale.backend.authentication.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,10 +21,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
+
+    @Column(unique = true)
     private String username;
+
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

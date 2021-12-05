@@ -36,10 +36,6 @@
             <groupId>org.springframework.boot</groupId>
         </dependency>
         <dependency>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <groupId>org.springframework.boot</groupId>
-        </dependency>
-        <dependency>
             <artifactId>spring-boot-starter-websocket</artifactId>
             <groupId>org.springframework.boot</groupId>
         </dependency>
@@ -91,6 +87,16 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+					<to>
+						<image>ghcr.io/maulik9898/scytale-backend</image>
+					</to>
+				</configuration>
+				<groupId>com.google.cloud.tools</groupId>
+				<version>2.8.0</version>
 			</plugin>
 		</plugins>
 	</build>

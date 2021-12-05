@@ -36,6 +36,7 @@ public class StompChannelInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         assert accessor != null;
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+            log.info("CONNECT");
 
             List<String> authorizationHeaders = Objects.requireNonNullElse(accessor.getNativeHeader("Authorization"), new ArrayList<>());
             if (!authorizationHeaders.isEmpty() && authorizationHeaders.get(0).startsWith("Bearer ")) {

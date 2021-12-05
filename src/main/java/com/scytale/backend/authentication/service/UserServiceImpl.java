@@ -6,8 +6,6 @@ import com.scytale.backend.authentication.model.User;
 import com.scytale.backend.authentication.repo.RoleRepo;
 import com.scytale.backend.authentication.repo.UserRepo;
 
-import net.bytebuddy.build.Plugin;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,7 +29,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        //TODO: add check for unique email id
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User new_user = userRepo.save(user);
         return addRoleToUser(new_user.getUsername(), ERole.ROLE_USER);
@@ -72,14 +69,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User not found in database");
 
-        } else {
-            log.info("User Found in the database: {}", username);
-
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName().name()));
-        });
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName().name())));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
