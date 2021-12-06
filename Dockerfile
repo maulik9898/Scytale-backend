@@ -29,8 +29,8 @@ RUN java -Djarmode=layertools -jar application.jar extract
 
 
 
-
-FROM gcr.io/distroless/java:11
+RUN addgroup -S scytale && adduser -S scytale -G scytale
+FROM openjdk:11.0.13-jre-slim
 
 
 WORKDIR application
@@ -39,6 +39,6 @@ COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
 
-
+USER scytale
 ENV _JAVA_OPTIONS "-XX:MaxRAMPercentage=90 -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8"
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
