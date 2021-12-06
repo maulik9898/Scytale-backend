@@ -29,16 +29,15 @@ RUN java -Djarmode=layertools -jar application.jar extract
 
 
 
-RUN addgroup -S scytale && adduser -S scytale -G scytale
-FROM openjdk:11.0.13-jre-slim
+
+FROM ibm-semeru-runtimes:open-11-jre
 
 
 WORKDIR application
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/application/ ./
+COPY  --from=builder application/dependencies/ ./
+COPY  --from=builder application/spring-boot-loader/ ./
+COPY  --from=builder application/snapshot-dependencies/ ./
+COPY  --from=builder application/application/ ./
 
-USER scytale
-ENV _JAVA_OPTIONS "-XX:MaxRAMPercentage=90 -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8"
+
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
