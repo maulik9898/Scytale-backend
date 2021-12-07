@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserSession {
 
-    String id;
-
-    String name;
-
     String userName;
 
-    List<String> subscriptions;
+    List<DeviceSession> sessions;
 
 }

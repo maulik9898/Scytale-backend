@@ -34,4 +34,15 @@ public class DeviceSessionServiceImpl implements DeviceSessionService {
     public String getDeviceName(String sessionId) {
         return deviceSessionRepo.findBySessionId(sessionId).getDeviceName();
     }
+
+    @Override
+    public void setPublicKey(String sessionId, String key) {
+        DeviceSession session = deviceSessionRepo.findBySessionId(sessionId);
+        session.setPubKey(key);
+    }
+
+    @Override
+    public DeviceSession getDeviceSession(String sessionId) {
+        return deviceSessionRepo.findBySessionId(sessionId);
+    }
 }

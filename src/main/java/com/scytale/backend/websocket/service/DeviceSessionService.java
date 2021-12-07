@@ -9,4 +9,9 @@ public interface DeviceSessionService {
     DeviceSession deleteDeviceSession(String sessionId);
 
     String getDeviceName(String sessionId);
+
+    void setPublicKey(String sessionId, String key);
+
+    DeviceSession getDeviceSession(String sessionId);
+
 }

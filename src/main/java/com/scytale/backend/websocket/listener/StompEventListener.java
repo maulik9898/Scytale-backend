@@ -17,7 +17,6 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,12 +38,17 @@ public class StompEventListener {
 
     public void sendSessionEvents(String userName) {
 
-        List<UserSession> userSessions = new ArrayList<>();
+        UserSession userSession = new UserSession();
         if (nonNull(simpUserRegistry.getUser(userName))) {
-            userSessions = simpUserRegistry.getUser(userName).getSessions().stream().map(simpSession -> new UserSession(simpSession.getId(), deviceSessionService.getDeviceName(simpSession.getId()), simpSession.getUser().getName(), simpSession.getSubscriptions().stream().map(SimpSubscription::getDestination).collect(Collectors.toList()))).collect(Collectors.toList());
+            userSession.setUserName(userName);
+            userSession.setSessions(simpUserRegistry.getUser(userName).getSessions().stream().map(simpSession -> {
+                DeviceSession session = deviceSessionService.getDeviceSession(simpSession.getId());
+                session.setSubscriptions(simpSession.getSubscriptions().stream().map(SimpSubscription::getDestination).collect(Collectors.toList()));
+                return session;
+            }).collect(Collectors.toList()));
 
         }
-        simpMessagingTemplate.convertAndSendToUser(userName, PubSubMapping.SESSION_SUB, userSessions);
+        simpMessagingTemplate.convertAndSendToUser(userName, PubSubMapping.SESSION_SUB, userSession);
     }
 
     @EventListener
@@ -60,9 +64,8 @@ public class StompEventListener {
 
             deviceName = isNull(deviceNames) ? sessionId : deviceNames.stream().findFirst().orElse(sessionId);
         }
-        deviceSessionService.saveDeviceSession(new DeviceSession(sessionId, deviceName, accessor.getUser().getName()));
+        deviceSessionService.saveDeviceSession(new DeviceSession(sessionId, deviceName, accessor.getUser().getName(), null, null));
         sendSessionEvents(accessor.getUser().getName());
-        log.info("Device {} connected", deviceName);
     }
 
     @EventListener
