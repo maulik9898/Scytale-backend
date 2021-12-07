@@ -1,5 +1,8 @@
 package com.scytale.backend.websocket.model;
 
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -19,5 +22,10 @@ public class DeviceSession {
     String deviceName;
 
     String userName;
+
+    @ElementCollection
+    List<String> subscriptions;
+
+    String pubKey;
 
 }
