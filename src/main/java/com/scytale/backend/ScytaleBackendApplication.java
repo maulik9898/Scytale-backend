@@ -16,10 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
-import lombok.extern.slf4j.Slf4j;
+
 
 @SpringBootApplication
-@Slf4j
 public class ScytaleBackendApplication {
 
 	@Value("${env.JWT_SECRET}")
