@@ -24,7 +24,12 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"vscjava.vscode-java-pack",
-		"gabrielbb.vscode-lombok"
+		"gabrielbb.vscode-lombok",
+		"github.vscode-pull-request-github",
+		"coenraads.bracket-pair-colorizer-2",
+		"ms-azuretools.vscode-docker",
+		"visualstudioexptteam.vscodeintellicode",
+		"pivotal.vscode-boot-dev-pack"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
