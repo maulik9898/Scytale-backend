@@ -23,16 +23,18 @@ import lombok.extern.slf4j.Slf4j;
 import static com.scytale.backend.authentication.utility.Constants.TOKEN_REFRESH;
 import static com.scytale.backend.authentication.utility.Constants.TOKEN_TYPE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/token")
-public class RefreshTokenResource {
+public class TokenResource {
 
     private final UserService userService;
+
 
     @GetMapping("/refresh")
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,6 +53,8 @@ public class RefreshTokenResource {
 
                 String access_token = Token.getAccessToken(user, request);
 
+                refresh_token = Token.getRefreshToken(user, request);
+
                 Token.getTokenResponseBody(response, refresh_token, access_token);
 
 
@@ -58,13 +62,33 @@ public class RefreshTokenResource {
                 log.error("Error  in : {}", e.getMessage());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_msg", e.getMessage());
-                response.setStatus(FORBIDDEN.value());
+                response.setStatus(UNAUTHORIZED.value());
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         } else {
             throw new RuntimeException("Refresh token is missing");
         }
+
+    }
+
+    @GetMapping("/validate")
+    void validateToken(HttpServletRequest request, HttpServletResponse response) {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            try {
+                String token = authorizationHeader.substring("Bearer ".length());
+                DecodedJWT decodedJWT = Token.decodedJWT(token);
+                response.setStatus(OK.value());
+
+            } catch (Exception e) {
+                log.error("Error  in : {}", e.getMessage());
+                response.setStatus(UNAUTHORIZED.value());
+            }
+        } else {
+            response.setStatus(UNAUTHORIZED.value());
+        }
+
 
     }
 

@@ -1,7 +1,7 @@
 version: '3'
 services:
   scytale:
-    image: maulik9898/scytale-backend:latest
+    build: .
     ports:
       - 8080:8080
     links:
@@ -10,16 +10,16 @@ services:
       - mariadb
 
     environment:
-       JWT_SECRET: 63CF48BBB53C8866579D8417F63BDA08FD289166AEB041C7FD94884BC6BCF21C
-       ADMIN_USERNAME: admin
-       ADMIN_PASSWORD: 12345678
-       ADMIN_NAME: test
+      JWT_SECRET: 63CF48ASB53C8866579B8417F63BDA08F6649166AEB041C7FD94884BC6BCF21L
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: 12345678
+      ADMIN_NAME: test
       # DB VARS
-       DB_HOST: mariadb
-       MARIADB_USER: maulik
-       MARIADB_PASSWORD: password
-       MARIADB_DATABASE: scytale
-       DB_PORT: 3306
+      DB_HOST: mariadb
+      MARIADB_USER: maulik
+      MARIADB_PASSWORD: password
+      MARIADB_DATABASE: scytale
+      DB_PORT: 3306
     restart: unless-stopped
 
   mariadb:

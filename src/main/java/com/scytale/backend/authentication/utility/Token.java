@@ -61,6 +61,11 @@ public class Token {
         return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + Constants.REFRESH_TOKEN_VALIDITY * 60 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim(TOKEN_TYPE, TOKEN_REFRESH).sign(getAlgorithm());
     }
 
+    public static String getRefreshToken(com.scytale.backend.authentication.model.User user, HttpServletRequest request) {
+
+        return JWT.create().withSubject(user.getUsername()).withExpiresAt(new Date(System.currentTimeMillis() + Constants.REFRESH_TOKEN_VALIDITY * 60 * 60 * 1000)).withIssuer(request.getRequestURL().toString()).withClaim(TOKEN_TYPE, TOKEN_REFRESH).sign(getAlgorithm());
+    }
+
     public static DecodedJWT decodedJWT(String token) {
         Algorithm algorithm = Token.getAlgorithm();
         JWTVerifier verifier = JWT.require(algorithm).build();
