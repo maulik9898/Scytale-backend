@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/auth/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests().antMatchers("/auth/**", "/token/refresh/**", "/scytale-ws/**", "/actuator/health").permitAll();
+        http.authorizeHttpRequests().antMatchers("/auth/**", "/token/**", "/scytale-ws/**", "/actuator/health").permitAll();
         http.authorizeHttpRequests().antMatchers("/admin/**").hasAuthority(ERole.ROLE_ADMIN.name());
         http.authorizeHttpRequests().antMatchers("/admin/user/**").hasAuthority(ERole.ROLE_ADMIN.name());
         http.authorizeHttpRequests().anyRequest().hasAnyAuthority(ERole.ROLE_USER.name(), ERole.ROLE_ADMIN.name());

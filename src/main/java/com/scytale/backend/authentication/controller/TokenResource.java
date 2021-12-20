@@ -8,6 +8,7 @@ import com.scytale.backend.authentication.utility.Token;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -73,24 +74,19 @@ public class TokenResource {
     }
 
     @GetMapping("/validate")
-    void validateToken(HttpServletRequest request, HttpServletResponse response) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                String token = authorizationHeader.substring("Bearer ".length());
-                DecodedJWT decodedJWT = Token.decodedJWT(token);
-                response.setStatus(OK.value());
+    void validateToken(@RequestParam("token") String token, HttpServletRequest request, HttpServletResponse response) {
+        try{
+            Token.decodedJWT(token);
+            response.setStatus(OK.value());
 
             } catch (Exception e) {
                 log.error("Error  in : {}", e.getMessage());
                 response.setStatus(UNAUTHORIZED.value());
             }
-        } else {
-            response.setStatus(UNAUTHORIZED.value());
-        }
+        } 
 
 
-    }
+    
 
 
 }
