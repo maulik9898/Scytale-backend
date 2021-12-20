@@ -11,10 +11,10 @@ public class Constants {
     public static final String TOKEN_REFRESH = "TOKEN_REFRESH";
 
     // in minutes
-    public static final Integer ACCESS_TOKEN_VALIDITY = 30;
+    public static final Integer ACCESS_TOKEN_VALIDITY = 60;
 
     //in hours
-    public static final Integer REFRESH_TOKEN_VALIDITY = 24;
+    public static final Integer REFRESH_TOKEN_VALIDITY = 72;
 
 
     public static String JWT_SECRET;
